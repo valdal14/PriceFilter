@@ -46,6 +46,8 @@ struct ContentView: View {
 		ZStack {
 			Color.gray.opacity(0.4)
 				.ignoresSafeArea()
+			
+			/// Add the PriceFilter view
 			PriceFilter(
 				viewModel: .init(minPrice: 14, maxPrice: 123),
 				font: .headline,

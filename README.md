@@ -46,20 +46,22 @@ struct ContentView: View {
 		ZStack {
 			Color.gray.opacity(0.4)
 				.ignoresSafeArea()
-			
-			/// Add the PriceFilter view
 			PriceFilter(
-				viewModel: .init(minPrice: 14, maxPrice: 123),
-				font: .headline,
-				fontWeight: .regular,
-				textColor: .black,
-				refreshIconColor: .green,
-				containerHeight: 140,
+				viewModel: .init(
+					minPrice: 124,
+					maxPrice: 23456,
+					currency: .yenOrYuan,
+					decimalFormatter: .dot
+				),
+				font: .title2,
+				fontWeight: .heavy,
+				textColor: .purple,
+				containerHeight: 170,
 				containerColor: .white,
-				baseBarColor: .gray.opacity(0.2),
-				rangeBarColor: .black,
-				leftSliderColor: .black,
-				rightSliderColor: .black,
+				baseBarColor: .purple.opacity(0.2),
+				rangeBarColor: .purple,
+				leftSliderColor: .gray,
+				rightSliderColor: .gray,
 				priceFont: .subheadline,
 				priceColor: .black) { minPriceRange, maxPriceRange in
 					print(minPriceRange)
@@ -67,10 +69,6 @@ struct ContentView: View {
 				}
 		}
     }
-}
-
-#Preview {
-    ContentView()
 }
 ```
 

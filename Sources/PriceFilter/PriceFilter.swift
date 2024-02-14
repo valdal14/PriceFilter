@@ -47,7 +47,7 @@ public struct PriceFilter: View {
 	let onFilterApplied: (_ minValue: Double, _ maxValue: Double) async throws -> Void
 	
 	
-	init(viewModel: PriceFilterModel,
+	public init(viewModel: PriceFilterModel,
 		 font: Font,
 		 fontWeight: Font.Weight,
 		 textColor: Color,

@@ -34,31 +34,37 @@ PriceFilter: Price Range Selection View for SwiftUI
 **Example:**
 
 ```swift
-struct MyView: View {
-    @State private var minPrice: Double = 20
-    @State private var maxPrice: Double = 100
+import PriceFilter
+import SwiftUI
 
+struct ContentView: View {
     var body: some View {
-        PriceFilter(
-            viewModel: PriceFilterModel(minPrice: minPrice, maxPrice: maxPrice),
-            font: .system(size: 16),
-            fontWeight: .semibold,
-            textColor: .black,
-            refreshIconColor: .gray,
-            containerHeight: 120,
-            containerColor: .white,
-            baseBarColor: .gray.opacity(0.2),
-            rangeBarColor: .blue,
-            leftSliderColor: .blue,
-            rightSliderColor: .blue,
-            priceFont: .system(size: 14),
-            priceColor: .black,
-            onFilterApplied: { minValue, maxValue in
-                // Handle filter application here
-                print("Min price: \(minValue), Max price: \(maxValue)")
-            }
-        )
+		ZStack {
+			Color.gray.opacity(0.4)
+				.ignoresSafeArea()
+			PriceFilter(
+				viewModel: .init(minPrice: 14, maxPrice: 123),
+				font: .headline,
+				fontWeight: .regular,
+				textColor: .black,
+				refreshIconColor: .green,
+				containerHeight: 140,
+				containerColor: .white,
+				baseBarColor: .gray.opacity(0.2),
+				rangeBarColor: .black,
+				leftSliderColor: .black,
+				rightSliderColor: .black,
+				priceFont: .subheadline,
+				priceColor: .black) { minPriceRange, maxPriceRange in
+					print(minPriceRange)
+					print(maxPriceRange)
+				}
+		}
     }
+}
+
+#Preview {
+    ContentView()
 }
 ```
 

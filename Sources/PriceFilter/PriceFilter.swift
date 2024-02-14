@@ -47,6 +47,37 @@ public struct PriceFilter: View {
 	let onFilterApplied: (_ minValue: Double, _ maxValue: Double) async throws -> Void
 	
 	
+	init(viewModel: PriceFilterModel,
+		 font: Font,
+		 fontWeight: Font.Weight,
+		 textColor: Color,
+		 refreshIconColor: Color,
+		 containerHeight: CGFloat,
+		 containerColor: Color,
+		 baseBarColor: Color,
+		 rangeBarColor: Color,
+		 leftSliderColor: Color,
+		 rightSliderColor: Color,
+		 priceFont: Font,
+		 priceColor: Color,
+		 onFilterApplied: @escaping (_: Double, _: Double) -> Void
+	) {
+		self.viewModel = viewModel
+		self.font = font
+		self.fontWeight = fontWeight
+		self.textColor = textColor
+		self.refreshIconColor = refreshIconColor
+		self.containerHeight = containerHeight
+		self.containerColor = containerColor
+		self.baseBarColor = baseBarColor
+		self.rangeBarColor = rangeBarColor
+		self.leftSliderColor = leftSliderColor
+		self.rightSliderColor = rightSliderColor
+		self.priceFont = priceFont
+		self.priceColor = priceColor
+		self.onFilterApplied = onFilterApplied
+	}
+	
 	public var body: some View {
 		ContainerView(height: containerHeight, backgroundColor: containerColor) {
 			VStack(alignment: .leading) {

@@ -74,6 +74,21 @@ struct ContentView: View {
 }
 ```
 
+**Note:**
+
+* If you want to specify a currency and the decimal portion is rendered in the `PriceFilter` you can use the extra arguments like so: 
+
+```swift
+PriceFilterModel = .init(
+	title: "Price",
+	minPrice: 14.89,
+	maxPrice: 84.20,
+	currency: .euro,
+	decimalFormatter: .comma
+)
+```
+
+
 ## Contribution
 
 Contributions to `PriceFilter` are always welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/valdal14/PriceFilter.git).

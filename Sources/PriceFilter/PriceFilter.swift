@@ -114,14 +114,22 @@ public struct PriceFilter: View {
 							posX: $leftSliderPosX,
 							oppositeSliderPosition: $rightSliderPosX,
 							backgroundColor: leftSliderColor,
-							direction: .right
+							direction: .right, 
+							onSlideCompleted: {
+								Task {
+									try await executeCallback()
+								}
+							}
 						)
 						SliderGripView(
 							posX: $rightSliderPosX,
 							oppositeSliderPosition: $leftSliderPosX,
 							backgroundColor: rightSliderColor,
-							direction: .left
-						)
+							direction: .left) {
+								Task {
+									try await executeCallback()
+								}
+							}
 					}
 				}
 			}

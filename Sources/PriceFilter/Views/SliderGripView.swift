@@ -15,20 +15,22 @@ struct SliderGripView: View {
 	@State private var posY: CGFloat = 0
 	
 	@Binding var oppositeSliderPosition: CGFloat
-	let backgroundColor: Color
+	private let backgroundColor: Color
 	private var direction: Direction
-	
+	private let onSlideCompleted: () -> Void
 	
 	init(
 		posX: Binding<CGFloat>,
 		oppositeSliderPosition: Binding<CGFloat>,
 		backgroundColor: Color = .black,
-		direction: Direction
+		direction: Direction,
+		onSlideCompleted: @escaping () -> Void
 	) {
 		self._posX = posX
 		self._oppositeSliderPosition = oppositeSliderPosition
 		self.backgroundColor = backgroundColor
 		self.direction = direction
+		self.onSlideCompleted = onSlideCompleted
 	}
 	
 	var body: some View {
@@ -59,6 +61,9 @@ struct SliderGripView: View {
 						
 						posX = min(maxAllowedPosX, max(minAllowedPosX, clampedPosX))
 					})
+					.onEnded({ value in
+						onSlideCompleted()
+					})
 			)
 	}
 }
@@ -68,7 +73,10 @@ struct SliderGripView_Previews: PreviewProvider {
 		SliderGripView(
 			posX: .constant(-150),
 			oppositeSliderPosition: .constant(380),
-			direction: .right
+			direction: .right, 
+			onSlideCompleted: {
+				/// drag gesture completed
+			}
 		)
 	}
 }

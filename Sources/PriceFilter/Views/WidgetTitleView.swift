@@ -11,9 +11,6 @@ struct WidgetTitleView: View {
 	let font: Font
 	let fontWeight: Font.Weight
 	let color: Color
-	let iconColor: Color
-	@Binding var isVisible: Bool
-	let onTap: () -> Void
 	
     var body: some View {
 		HStack {
@@ -23,18 +20,6 @@ struct WidgetTitleView: View {
 				.foregroundStyle(color)
 				.padding()
 			Spacer()
-			Button(action: {
-				onTap()
-			}, label: {
-				Image(systemName: "arrow.clockwise.circle.fill")
-					.resizable()
-					.frame(width: 24, height: 24)
-					.foregroundStyle(withAnimation(.spring, {
-						isVisible ? iconColor : .gray.opacity(0.5)
-					}))
-					.padding(.trailing, 16)
-			})
-			.disabled(!isVisible)
 		}
         
     }
@@ -47,12 +32,7 @@ struct WidgetTitleView_Previews: PreviewProvider {
 			title: "Price",
 			font: .headline,
 			fontWeight: .bold,
-			color: .black, 
-			iconColor: .green,
-			isVisible: .constant(false),
-			onTap: {
-				/// callback
-			}
+			color: .black
 		)
 	}
 }

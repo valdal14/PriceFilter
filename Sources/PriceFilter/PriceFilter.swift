@@ -29,7 +29,6 @@ public struct PriceFilter: View {
 	public let font: Font
 	public let fontWeight: Font.Weight
 	public let textColor: Color
-	public let refreshIconColor: Color
 	/// container
 	public let containerHeight: CGFloat
 	public let containerColor: Color
@@ -51,7 +50,6 @@ public struct PriceFilter: View {
 		 font: Font,
 		 fontWeight: Font.Weight,
 		 textColor: Color,
-		 refreshIconColor: Color,
 		 containerHeight: CGFloat,
 		 containerColor: Color,
 		 baseBarColor: Color,
@@ -66,7 +64,6 @@ public struct PriceFilter: View {
 		self.font = font
 		self.fontWeight = fontWeight
 		self.textColor = textColor
-		self.refreshIconColor = refreshIconColor
 		self.containerHeight = containerHeight
 		self.containerColor = containerColor
 		self.baseBarColor = baseBarColor
@@ -85,14 +82,7 @@ public struct PriceFilter: View {
 					title: viewModel.title,
 					font: font,
 					fontWeight: fontWeight,
-					color: textColor, 
-					iconColor: refreshIconColor,
-					isVisible: $isApplyVisible,
-					onTap: {
-						Task {
-							try await executeCallback()
-						}
-					}
+					color: textColor
 				)
 				
 				PriceView(
@@ -184,8 +174,7 @@ struct PriceFilter_Previews: PreviewProvider {
 			viewModel: .mock,
 			font: .headline,
 			fontWeight: .bold,
-			textColor: .black, 
-			refreshIconColor: .green,
+			textColor: .black,
 			containerHeight: 140,
 			containerColor: .gray.opacity(0.3),
 			baseBarColor: .black.opacity(0.3),

@@ -42,29 +42,34 @@ struct SliderGripView: View {
 			.gesture(
 				DragGesture()
 					.onChanged({ value in
-						let proposedPosX = value.location.x
-						let minX = Self.minPosition
-						let maxX = Self.maxPosition
-						
-						let clampedPosX = max(minX, min(maxX, proposedPosX))
-						
-						var minAllowedPosX: CGFloat
-						var maxAllowedPosX: CGFloat
-						switch direction {
-						case .left:
-							minAllowedPosX = oppositeSliderPosition + Self.gripSize
-							maxAllowedPosX = maxX
-						case .right:
-							minAllowedPosX = minX
-							maxAllowedPosX = oppositeSliderPosition - Self.gripSize
-						}
-						
-						posX = min(maxAllowedPosX, max(minAllowedPosX, clampedPosX))
+						onDragValueChangedPerform(with: value)
 					})
 					.onEnded({ value in
 						onSlideCompleted()
 					})
 			)
+	}
+	
+	// MARK: - Helpers
+	private func onDragValueChangedPerform(with value: DragGesture.Value) {
+		let proposedPosX = value.location.x
+		let minX = Self.minPosition
+		let maxX = Self.maxPosition
+		
+		let clampedPosX = max(minX, min(maxX, proposedPosX))
+		
+		var minAllowedPosX: CGFloat
+		var maxAllowedPosX: CGFloat
+		switch direction {
+		case .left:
+			minAllowedPosX = oppositeSliderPosition + Self.gripSize
+			maxAllowedPosX = maxX
+		case .right:
+			minAllowedPosX = minX
+			maxAllowedPosX = oppositeSliderPosition - Self.gripSize
+		}
+		
+		posX = min(maxAllowedPosX, max(minAllowedPosX, clampedPosX))
 	}
 }
 

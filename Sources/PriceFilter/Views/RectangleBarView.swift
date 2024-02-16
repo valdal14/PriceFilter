@@ -33,7 +33,7 @@ struct RectangleBarView: View {
 						maxHeight: 5
 					)
 					.position(
-						x: (sliderTwoPosX + sliderOnePosX) / 2,
+						x: (sliderTwoPosX + sliderOnePosX) / Self.posY,
 						y: Self.posY
 					)
 			}

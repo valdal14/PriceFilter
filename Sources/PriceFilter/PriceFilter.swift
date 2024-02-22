@@ -4,6 +4,10 @@
 import SwiftUI
 
 public struct PriceFilter: View {
+	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double, _ wasRangeChanged: Bool) async throws -> Void
+	
+	@AptiveFeedback private var aptiveFeedback
+	
 	private static let sliderSize: CGFloat = 30
 	/// keep track of the price
 	private static let minValue: CGFloat = 20
@@ -21,8 +25,12 @@ public struct PriceFilter: View {
 	@State private var desiredSliderMovement: CGFloat = 0
 	@State private var sliderMovementRatio: CGFloat = 0
 	
-	/// Shows apply filter
-	@State private var isApplyVisible: Bool = false
+	/// This property can be used to decide whether
+	/// the range state has changed compared to the
+	/// the init time. If the range has not change its
+	/// state this property can be used to disable or
+	/// enable a CTA button for instance.
+	@State private var isValidRange: Bool = false
 	
 	/// title
 	public let viewModel: PriceFilterModel
@@ -43,7 +51,7 @@ public struct PriceFilter: View {
 	public let priceColor: Color
 	
 	/// callback closure
-	let onFilterApplied: (_ minValue: Double, _ maxValue: Double) async throws -> Void
+	let onFilterApplied: PriceFilterCallback
 	
 	
 	public init(viewModel: PriceFilterModel,
@@ -58,7 +66,7 @@ public struct PriceFilter: View {
 		 rightSliderColor: Color,
 		 priceFont: Font,
 		 priceColor: Color,
-		 onFilterApplied: @escaping (_: Double, _: Double) -> Void
+		 onFilterApplied: @escaping PriceFilterCallback
 	) {
 		self.viewModel = viewModel
 		self.font = font
@@ -133,19 +141,21 @@ public struct PriceFilter: View {
 			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
 			viewModel.minRangePrice += movement
 			previousLeftSliderPosX = value
-			isApplyVisible = true
+			self._aptiveFeedback.sendFeeback()
+			isValidRange = true
 		})
 		.onChange(of: rightSliderPosX, perform: { value in
 			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
 			viewModel.maxRangePrice += movement
 			previousRightSliderPosX = value
-			isApplyVisible = true
+			self._aptiveFeedback.sendFeeback()
+			isValidRange = true
 		})
-		.onChange(of: leftSliderPosX.isEqual(to: Self.minValue), perform: { value in
+		.onChange(of: leftSliderPosX.isEqual(to: Self.minValue), perform: { _ in
 			viewModel.minRangePrice = viewModel.minPrice
 			canApplyFilter()
 		})
-		.onChange(of: rightSliderPosX.isEqual(to: Self.maxValue), perform: { value in
+		.onChange(of: rightSliderPosX.isEqual(to: Self.maxValue), perform: { _ in
 			viewModel.maxRangePrice = viewModel.maxPrice
 			canApplyFilter()
 		})
@@ -154,15 +164,15 @@ public struct PriceFilter: View {
 	// MARK: - Helpers
 	private func canApplyFilter() {
 		if leftSliderPosX.isEqual(to: Self.minValue) && rightSliderPosX.isEqual(to: Self.maxValue) {
-			isApplyVisible = false
+			isValidRange = false
 		} else {
-			isApplyVisible = true
+			isValidRange = true
 		}
 	}
 	
 	private func executeCallback() async throws {
 		let (min, max) = viewModel.calculateRange()
-		try await onFilterApplied(min, max)
+		try await onFilterApplied(min, max, isValidRange)
 	}
 }
 
@@ -183,7 +193,7 @@ struct PriceFilter_Previews: PreviewProvider {
 			rightSliderColor: .black,
 			priceFont: .subheadline,
 			priceColor: .black,
-			onFilterApplied: ({ _,_ in
+			onFilterApplied: ({ _,_,_ in
 				/// callback closure
 			})
 		)

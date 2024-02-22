@@ -4,7 +4,7 @@
 import SwiftUI
 
 public struct PriceFilter: View {
-	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double, _ wasRangeChanged: Bool) async throws -> Void
+	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double) async throws -> Void
 	
 	private static let sliderSize: CGFloat = 30
 	/// keep track of the price
@@ -22,13 +22,6 @@ public struct PriceFilter: View {
 	@State private var priceRange: Double = 0
 	@State private var desiredSliderMovement: CGFloat = 0
 	@State private var sliderMovementRatio: CGFloat = 0
-	
-	/// This property can be used to decide whether
-	/// the range state has changed compared to the
-	/// the init time. If the range has not change its
-	/// state this property can be used to disable or
-	/// enable a CTA button for instance.
-	@State private var isValidRange: Bool = false
 	
 	/// title
 	public let viewModel: PriceFilterModel
@@ -139,36 +132,24 @@ public struct PriceFilter: View {
 			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
 			viewModel.minRangePrice += movement
 			previousLeftSliderPosX = value
-			isValidRange = true
 		})
 		.onChange(of: rightSliderPosX, perform: { value in
 			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
 			viewModel.maxRangePrice += movement
 			previousRightSliderPosX = value
-			isValidRange = true
 		})
 		.onChange(of: leftSliderPosX.isEqual(to: Self.minValue), perform: { _ in
 			viewModel.minRangePrice = viewModel.minPrice
-			canApplyFilter()
 		})
 		.onChange(of: rightSliderPosX.isEqual(to: Self.maxValue), perform: { _ in
 			viewModel.maxRangePrice = viewModel.maxPrice
-			canApplyFilter()
 		})
 	}
 	
 	// MARK: - Helpers
-	private func canApplyFilter() {
-		if leftSliderPosX.isEqual(to: Self.minValue) && rightSliderPosX.isEqual(to: Self.maxValue) {
-			isValidRange = false
-		} else {
-			isValidRange = true
-		}
-	}
-	
 	private func executeCallback() async throws {
 		let (min, max) = viewModel.calculateRange()
-		try await onFilterApplied(min, max, isValidRange)
+		try await onFilterApplied(min, max)
 	}
 }
 
@@ -189,7 +170,7 @@ struct PriceFilter_Previews: PreviewProvider {
 			rightSliderColor: .black,
 			priceFont: .subheadline,
 			priceColor: .black,
-			onFilterApplied: ({ _,_,_ in
+			onFilterApplied: ({ _,_ in
 				/// callback closure
 			})
 		)

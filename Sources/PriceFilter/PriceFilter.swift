@@ -131,18 +131,18 @@ public struct PriceFilter: View {
 		.onChange(of: leftSliderPosX, perform: { value in
 			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
 			viewModel.minRangePrice += movement
+			if viewModel.minRangePrice <= viewModel.minPrice {
+				resetMinPrices()
+			}
 			previousLeftSliderPosX = value
 		})
 		.onChange(of: rightSliderPosX, perform: { value in
 			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
 			viewModel.maxRangePrice += movement
+			if viewModel.maxRangePrice >= viewModel.maxPrice {
+				resetMaxPrice()
+			}
 			previousRightSliderPosX = value
-		})
-		.onChange(of: leftSliderPosX.isEqual(to: Self.minValue), perform: { _ in
-			viewModel.minRangePrice = viewModel.minPrice
-		})
-		.onChange(of: rightSliderPosX.isEqual(to: Self.maxValue), perform: { _ in
-			viewModel.maxRangePrice = viewModel.maxPrice
 		})
 	}
 	
@@ -150,6 +150,14 @@ public struct PriceFilter: View {
 	private func executeCallback() async throws {
 		let (min, max) = viewModel.calculateRange()
 		try await onFilterApplied(min, max)
+	}
+	
+	private func resetMinPrices() {
+		viewModel.minRangePrice = viewModel.minPrice
+	}
+	
+	private func resetMaxPrice() {
+		viewModel.maxRangePrice = viewModel.maxPrice
 	}
 }
 

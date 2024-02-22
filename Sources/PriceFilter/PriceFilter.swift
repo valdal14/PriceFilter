@@ -6,8 +6,6 @@ import SwiftUI
 public struct PriceFilter: View {
 	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double, _ wasRangeChanged: Bool) async throws -> Void
 	
-	@AptiveFeedback private var aptiveFeedback
-	
 	private static let sliderSize: CGFloat = 30
 	/// keep track of the price
 	private static let minValue: CGFloat = 20
@@ -141,14 +139,12 @@ public struct PriceFilter: View {
 			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
 			viewModel.minRangePrice += movement
 			previousLeftSliderPosX = value
-			self._aptiveFeedback.sendFeeback()
 			isValidRange = true
 		})
 		.onChange(of: rightSliderPosX, perform: { value in
 			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
 			viewModel.maxRangePrice += movement
 			previousRightSliderPosX = value
-			self._aptiveFeedback.sendFeeback()
 			isValidRange = true
 		})
 		.onChange(of: leftSliderPosX.isEqual(to: Self.minValue), perform: { _ in

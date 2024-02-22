@@ -12,7 +12,7 @@
 
 PriceFilter: Price Range Selection View for SwiftUI
 
-![Start](https://github.com/valdal14/PriceFilter/blob/main/Samples/priceSliders?raw=true "PriceFilter example")
+![Start](https://github.com/valdal14/PriceFilter/blob/main/Samples/priceSliders.png?raw=true "PriceFilter example")
 
 ## Features
 

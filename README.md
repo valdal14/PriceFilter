@@ -42,8 +42,6 @@ import PriceFilter
 import SwiftUI
 
 struct ContentView: View {
-	@State private var isRangeOneValid = false
-	
     var body: some View {
 		ZStack {
 			Color.gray.opacity(0.4)
@@ -65,8 +63,7 @@ struct ContentView: View {
 				leftSliderColor: .gray,
 				rightSliderColor: .gray,
 				priceFont: .subheadline,
-				priceColor: .black) { minPriceRange, maxPriceRange, isValidRange  in
-					isRangeOneValid = isValidRange
+				priceColor: .black) { minPriceRange, maxPriceRange  in
 					print(minPriceRange)
 					print(maxPriceRange)
 				}

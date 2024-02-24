@@ -24,7 +24,7 @@ public struct PriceFilter: View {
 	@State private var sliderMovementRatio: CGFloat = 0
 	
 	/// title
-	public let viewModel: PriceFilterModel
+	@StateObject public var viewModel: PriceFilterModel
 	public let font: Font
 	public let fontWeight: Font.Weight
 	public let textColor: Color
@@ -45,7 +45,7 @@ public struct PriceFilter: View {
 	let onFilterApplied: PriceFilterCallback
 	
 	
-	public init(viewModel: PriceFilterModel,
+	public init(viewModel: StateObject<PriceFilterModel>,
 		 font: Font,
 		 fontWeight: Font.Weight,
 		 textColor: Color,
@@ -59,7 +59,7 @@ public struct PriceFilter: View {
 		 priceColor: Color,
 		 onFilterApplied: @escaping PriceFilterCallback
 	) {
-		self.viewModel = viewModel
+		self._viewModel = viewModel
 		self.font = font
 		self.fontWeight = fontWeight
 		self.textColor = textColor
@@ -166,7 +166,7 @@ public struct PriceFilter: View {
 struct PriceFilter_Previews: PreviewProvider {
 	static var previews: some View {
 		PriceFilter(
-			viewModel: .mock,
+			viewModel: StateObject(wrappedValue: .mock),
 			font: .headline,
 			fontWeight: .bold,
 			textColor: .black,

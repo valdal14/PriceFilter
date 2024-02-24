@@ -45,11 +45,13 @@ struct ContentView: View {
 			Color.gray.opacity(0.4)
 				.ignoresSafeArea()
 			PriceFilter(
-				viewModel: .init(
-					minPrice: 124,
-					maxPrice: 23456,
-					currency: .yenOrYuan,
-					decimalFormatter: .dot
+				viewModel: StateObject.init(
+					wrappedValue: .init(
+						minPrice: 124,
+						maxPrice: 23456,
+						currency: .yenOrYuan,
+						decimalFormatter: .dot
+					)
 				),
 				font: .title2,
 				fontWeight: .heavy,

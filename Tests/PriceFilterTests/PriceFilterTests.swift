@@ -86,6 +86,33 @@ final class PriceFilterTests: XCTestCase {
 		XCTAssertEqual(sut.title, localized("PRICE"))
 	}
 	
+	func testWasPriceSliderRangeMovedReturnFalse() {
+		let sut = PriceFilterModel(minPrice: 14.00, maxPrice: 28.00)
+		XCTAssertFalse(sut.wasPriceSliderRangeMoved)
+	}
+	
+	func testWasPriceSliderRangeMovedReturnsTrueWhenTheLeftSliderWasMoved() {
+		let sut = PriceFilterModel(minPrice: 14.00, maxPrice: 28.00)
+		sut.minPrice = 17.34
+		XCTAssertTrue(sut.wasPriceSliderRangeMoved)
+	}
+	
+	func testWasPriceSliderRangeMovedReturnsFalseWhenTheRightSliderWasMoved() {
+		let sut = PriceFilterModel(minPrice: 14.00, maxPrice: 28.00)
+		sut.maxPrice = 25.34
+		XCTAssertTrue(sut.wasPriceSliderRangeMoved)
+	}
+	
+	func testWasPriceSliderRangeMovedReturnsFalseAfterResettingTheSlidersToTheirOriginalValue() {
+		let sut = PriceFilterModel(minPrice: 14.00, maxPrice: 28.00)
+		sut.minPrice = 17.34
+		sut.maxPrice = 25.34
+		XCTAssertTrue(sut.wasPriceSliderRangeMoved, "Expected slider to be moved")
+		sut.minPrice = 14.00
+		sut.maxPrice = 28.00
+		XCTAssertFalse(sut.wasPriceSliderRangeMoved, "Expected slider to be back to the original position")
+	}
+	
 	// MARK: - Helpers
 	func makeSUT() -> PriceFilterModel {
 		return PriceFilterModel.mock

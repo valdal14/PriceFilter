@@ -4,7 +4,7 @@
 import SwiftUI
 
 public struct PriceFilter: View {
-	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double) async throws -> Void
+	public typealias PriceFilterCallback = (_ minValue: Double, _ maxValue: Double, _ wasMoved: Bool) async throws -> Void
 	
 	private static let sliderSize: CGFloat = 30
 	/// keep track of the price
@@ -139,7 +139,7 @@ public struct PriceFilter: View {
 	// MARK: - Helpers
 	private func executeCallback() async throws {
 		let (min, max) = viewModel.calculateRange()
-		try await onFilterApplied(min, max)
+		try await onFilterApplied(min, max, viewModel.wasPriceSliderRangeMoved)
 	}
 	
 	/// Moves the slider in the specified direction.
@@ -187,7 +187,7 @@ struct PriceFilter_Previews: PreviewProvider {
 			rightSliderColor: .black,
 			priceFont: .subheadline,
 			priceColor: .black,
-			onFilterApplied: ({ _,_ in
+			onFilterApplied: ({ _, _, _ in
 				/// callback closure
 			})
 		)

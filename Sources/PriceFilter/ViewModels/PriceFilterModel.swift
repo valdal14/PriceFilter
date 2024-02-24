@@ -52,6 +52,10 @@ public class PriceFilterModel: ObservableObject {
 		return (Double(min), Double(max))
 	}
 	
+	var wasPriceSliderRangeMoved: Bool {
+		return (minRangePrice == minPrice && maxRangePrice == maxPrice) ? false : true
+	}
+	
 	public static func localise() -> String {
 		let table = "Localizable"
 		let bundle = Bundle.module

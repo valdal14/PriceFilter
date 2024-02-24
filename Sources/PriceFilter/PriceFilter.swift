@@ -129,20 +129,10 @@ public struct PriceFilter: View {
 			}
 		}
 		.onChange(of: leftSliderPosX, perform: { value in
-			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
-			viewModel.minRangePrice += movement
-			if viewModel.minRangePrice <= viewModel.minPrice {
-				resetMinPrices()
-			}
-			previousLeftSliderPosX = value
+			moveSlider(direction: .left, value: value)
 		})
 		.onChange(of: rightSliderPosX, perform: { value in
-			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
-			viewModel.maxRangePrice += movement
-			if viewModel.maxRangePrice >= viewModel.maxPrice {
-				resetMaxPrice()
-			}
-			previousRightSliderPosX = value
+			moveSlider(direction: .right, value: value)
 		})
 	}
 	
@@ -152,12 +142,31 @@ public struct PriceFilter: View {
 		try await onFilterApplied(min, max)
 	}
 	
-	private func resetMinPrices() {
-		viewModel.minRangePrice = viewModel.minPrice
-	}
-	
-	private func resetMaxPrice() {
-		viewModel.maxRangePrice = viewModel.maxPrice
+	/// Moves the slider in the specified direction.
+	///
+	/// - Parameters:
+	///   - direction: The direction in which to move the slider. It can be either `.left` or `.right`.
+	///   - value: The new position value of the slider.
+	///
+	/// This function updates the slider position based on the given direction and value. If the slider
+	/// reaches the minimum or maximum price limit, it stops at that limit.
+	private func moveSlider(direction: Direction, value: CGFloat) {
+		switch direction {
+		case .left:
+			let movement = (value - previousLeftSliderPosX) * sliderMovementRatio
+			viewModel.minRangePrice += movement
+			if viewModel.minRangePrice <= viewModel.minPrice {
+				viewModel.minRangePrice = viewModel.minPrice
+			}
+			previousLeftSliderPosX = value
+		case .right:
+			let movement = (value - previousRightSliderPosX) * sliderMovementRatio
+			viewModel.maxRangePrice += movement
+			if viewModel.maxRangePrice >= viewModel.maxPrice {
+				viewModel.maxRangePrice = viewModel.maxPrice
+			}
+			previousRightSliderPosX = value
+		}
 	}
 }
 

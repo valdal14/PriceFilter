@@ -8,6 +8,7 @@ import SwiftUI
 
 struct SliderGripView: View {
 	private static let gripSize: CGFloat = 30
+	private static let ringSize: CGFloat = 26
 	private static let minPosition: CGFloat = 20
 	private static let maxPosition: CGFloat = UIScreen.main.bounds.width - Self.gripSize
 	
@@ -16,6 +17,7 @@ struct SliderGripView: View {
 	
 	@Binding var oppositeSliderPosition: CGFloat
 	private let backgroundColor: Color
+	private let ringColor: Color
 	private var direction: Direction
 	private let onSlideCompleted: () -> Void
 	
@@ -23,6 +25,7 @@ struct SliderGripView: View {
 		posX: Binding<CGFloat>,
 		oppositeSliderPosition: Binding<CGFloat>,
 		backgroundColor: Color = .black,
+		ringColor: Color = .white.opacity(0.3),
 		direction: Direction,
 		onSlideCompleted: @escaping () -> Void
 	) {
@@ -30,6 +33,7 @@ struct SliderGripView: View {
 		self._oppositeSliderPosition = oppositeSliderPosition
 		self.backgroundColor = backgroundColor
 		self.direction = direction
+		self.ringColor = ringColor
 		self.onSlideCompleted = onSlideCompleted
 	}
 	
@@ -48,6 +52,22 @@ struct SliderGripView: View {
 						onSlideCompleted()
 					})
 			)
+			.overlay {
+				Circle()
+					.stroke(ringColor, lineWidth: 1)
+					.frame(width: Self.ringSize, height: Self.ringSize)
+					.position(.init(x: posX, y: posY))
+					.overlay {
+						HStack(spacing: 3) {
+							ForEach(0..<3) { _ in
+								Rectangle()
+									.foregroundStyle(ringColor)
+									.frame(width: 1, height: Self.ringSize - 8)
+							}
+						}
+						.position(.init(x: posX, y: posY))
+					}
+			}
 	}
 	
 	// MARK: - Helpers

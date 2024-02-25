@@ -25,7 +25,7 @@ struct SliderGripView: View {
 		posX: Binding<CGFloat>,
 		oppositeSliderPosition: Binding<CGFloat>,
 		backgroundColor: Color = .black,
-		ringColor: Color = .white.opacity(0.3),
+		ringColor: Color = .white,
 		direction: Direction,
 		onSlideCompleted: @escaping () -> Void
 	) {
@@ -54,14 +54,14 @@ struct SliderGripView: View {
 			)
 			.overlay {
 				Circle()
-					.stroke(ringColor, lineWidth: 1)
+					.stroke(ringColor.opacity(0.3), lineWidth: 1)
 					.frame(width: Self.ringSize, height: Self.ringSize)
 					.position(.init(x: posX, y: posY))
 					.overlay {
 						HStack(spacing: 3) {
 							ForEach(0..<3) { _ in
 								Rectangle()
-									.foregroundStyle(ringColor)
+									.foregroundStyle(ringColor.opacity(0.3))
 									.frame(width: 1, height: Self.ringSize - 8)
 							}
 						}

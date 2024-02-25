@@ -37,6 +37,7 @@ public struct PriceFilter: View {
 	/// sliders
 	public let leftSliderColor: Color
 	public let rightSliderColor: Color
+	public let ringColor: Color
 	/// price
 	public let priceFont: Font
 	public let priceColor: Color
@@ -55,6 +56,7 @@ public struct PriceFilter: View {
 		 rangeBarColor: Color,
 		 leftSliderColor: Color,
 		 rightSliderColor: Color,
+		 ringColor: Color,
 		 priceFont: Font,
 		 priceColor: Color,
 		 onFilterApplied: @escaping PriceFilterCallback
@@ -69,6 +71,7 @@ public struct PriceFilter: View {
 		self.rangeBarColor = rangeBarColor
 		self.leftSliderColor = leftSliderColor
 		self.rightSliderColor = rightSliderColor
+		self.ringColor = ringColor
 		self.priceFont = priceFont
 		self.priceColor = priceColor
 		self.onFilterApplied = onFilterApplied
@@ -103,7 +106,8 @@ public struct PriceFilter: View {
 							posX: $leftSliderPosX,
 							oppositeSliderPosition: $rightSliderPosX,
 							backgroundColor: leftSliderColor,
-							direction: .right, 
+							ringColor: ringColor,
+							direction: .right,
 							onSlideCompleted: {
 								Task {
 									try await executeCallback()
@@ -114,11 +118,14 @@ public struct PriceFilter: View {
 							posX: $rightSliderPosX,
 							oppositeSliderPosition: $leftSliderPosX,
 							backgroundColor: rightSliderColor,
-							direction: .left) {
+							ringColor: ringColor,
+							direction: .left,
+							onSlideCompleted: {
 								Task {
 									try await executeCallback()
 								}
 							}
+						)
 					}
 				}
 			}
@@ -184,7 +191,8 @@ struct PriceFilter_Previews: PreviewProvider {
 			baseBarColor: .black.opacity(0.3),
 			rangeBarColor: .black,
 			leftSliderColor: .black,
-			rightSliderColor: .black,
+			rightSliderColor: .black, 
+			ringColor: .white,
 			priceFont: .subheadline,
 			priceColor: .black,
 			onFilterApplied: ({ _, _, _ in

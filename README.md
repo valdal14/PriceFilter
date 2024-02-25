@@ -65,6 +65,7 @@ struct ContentView: View {
 				rangeBarColor: .purple,
 				leftSliderColor: .gray,
 				rightSliderColor: .gray,
+				ringColor: .white
 				priceFont: .subheadline,
 				priceColor: .black) { minPriceRange, maxPriceRange, wasMoved in
 					if wasMoved { 

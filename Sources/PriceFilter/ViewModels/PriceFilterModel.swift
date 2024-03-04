@@ -53,7 +53,15 @@ public class PriceFilterModel: ObservableObject {
 	}
 	
 	var wasPriceSliderRangeMoved: Bool {
-		return (minRangePrice == minPrice && maxRangePrice == maxPrice) ? false : true
+		let unformattedMin = minPriceText.replacingOccurrences(of: "\(currency.rawValue) ", with: "").replacingOccurrences(of: ",", with: ".")
+		let unformattedMax = maxPriceText.replacingOccurrences(of: "\(currency.rawValue) ", with: "").replacingOccurrences(of: ",", with: ".")
+		if let newMin = Double(unformattedMin), let newMax = Double(unformattedMax) {
+			minRangePrice = newMin
+			maxRangePrice = newMax
+			return (newMin == minPrice && newMax == maxPrice) ? false : true
+		} else {
+			return true
+		}
 	}
 	
 	public static func localise() -> String {

@@ -42,24 +42,31 @@ public struct PriceFilter: View {
 	public let priceFont: Font
 	public let priceColor: Color
 	
+	/// restore binding
+	@Binding var wasRestored: Bool
+	let newRange: (Int, Int)
+	
 	/// callback closure
 	let onFilterApplied: PriceFilterCallback
 	
 	
-	public init(viewModel: StateObject<PriceFilterModel>,
-		 font: Font,
-		 fontWeight: Font.Weight,
-		 textColor: Color,
-		 containerHeight: CGFloat,
-		 containerColor: Color,
-		 baseBarColor: Color,
-		 rangeBarColor: Color,
-		 leftSliderColor: Color,
-		 rightSliderColor: Color,
-		 ringColor: Color,
-		 priceFont: Font,
-		 priceColor: Color,
-		 onFilterApplied: @escaping PriceFilterCallback
+	public init(
+		viewModel: StateObject<PriceFilterModel>,
+		font: Font,
+		fontWeight: Font.Weight,
+		textColor: Color,
+		containerHeight: CGFloat,
+		containerColor: Color,
+		baseBarColor: Color,
+		rangeBarColor: Color,
+		leftSliderColor: Color,
+		rightSliderColor: Color,
+		ringColor: Color,
+		priceFont: Font,
+		priceColor: Color,
+		wasRestored: Binding<Bool>,
+		newRange: (Int, Int),
+		onFilterApplied: @escaping PriceFilterCallback
 	) {
 		self._viewModel = viewModel
 		self.font = font
@@ -74,6 +81,8 @@ public struct PriceFilter: View {
 		self.ringColor = ringColor
 		self.priceFont = priceFont
 		self.priceColor = priceColor
+		self._wasRestored = wasRestored
+		self.newRange = newRange
 		self.onFilterApplied = onFilterApplied
 	}
 	
@@ -133,6 +142,10 @@ public struct PriceFilter: View {
 				priceRange = viewModel.maxPrice - viewModel.minPrice
 				desiredSliderMovement = (Self.maxValue - Self.minValue)
 				sliderMovementRatio = priceRange / desiredSliderMovement
+				
+				if wasRestored {
+					setNewRange(newMin: CGFloat(newRange.0), newMax: CGFloat(newRange.1))
+				}
 			}
 		}
 		.onChange(of: leftSliderPosX, perform: { value in
@@ -175,6 +188,38 @@ public struct PriceFilter: View {
 			previousRightSliderPosX = value
 		}
 	}
+	
+	func setNewRange(newMin: CGFloat, newMax: CGFloat) {
+		let movMin = calculateSliderPosition(for: newMin)
+		let movMax = calculateSliderPosition(for: newMax)
+		moveLeftSlider(to: movMin)
+		moveRightSlider(to: movMax)
+	}
+	
+	/// Function to move the left slider to a specific position
+	/// - Parameter newPosition: The new position for the left slider
+	public func moveLeftSlider(to newPosition: CGFloat) {
+		leftSliderPosX = newPosition
+	}
+	
+	/// Function to move the right slider to a specific position
+	/// - Parameter newPosition: The new position for the right slider
+	public func moveRightSlider(to newPosition: CGFloat) {
+		rightSliderPosX = newPosition
+	}
+	
+	func calculateSliderPosition(for price: Double) -> CGFloat {
+		// Calculate the price range represented by the slider
+		let priceRange = viewModel.maxPrice - viewModel.minPrice
+		
+		// Calculate the proportional position within this range corresponding to the desired price
+		let proportionalPosition = CGFloat((price - viewModel.minPrice) / priceRange)
+		
+		// Calculate the actual position within the slider's range
+		let actualPosition = PriceFilter.minValue + proportionalPosition * (PriceFilter.maxValue - PriceFilter.minValue)
+		
+		return actualPosition
+	}
 }
 
 
@@ -194,7 +239,9 @@ struct PriceFilter_Previews: PreviewProvider {
 			rightSliderColor: .black, 
 			ringColor: .white,
 			priceFont: .subheadline,
-			priceColor: .black,
+			priceColor: .black, 
+			wasRestored: .constant(true),
+			newRange: (40, 60),
 			onFilterApplied: ({ _, _, _ in
 				/// callback closure
 			})

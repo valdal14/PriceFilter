@@ -66,7 +66,7 @@ public class PriceFilterModel: ObservableObject {
 	
 	public static func localise() -> String {
 		let table = "Localizable"
-		let bundle = Bundle.module
+		let bundle = Bundle.main
 		let value = bundle.localizedString(forKey: Self.LOCALISED_TITLE_KEY, value: nil, table: table)
 		if value == Self.LOCALISED_TITLE_KEY {
 			return "Price"

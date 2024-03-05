@@ -67,7 +67,10 @@ struct ContentView: View {
 				rightSliderColor: .gray,
 				ringColor: .white
 				priceFont: .subheadline,
-				priceColor: .black) { minPriceRange, maxPriceRange, wasMoved in
+				priceColor: .black,
+				wasRestored: .constant(viewModel.wasRestoredFromCache),
+				newRange: (viewModel.newRange.min, viewModel.newRange.max)
+				) { minPriceRange, maxPriceRange, wasMoved in
 					if wasMoved { 
 						minPrice = minPriceRange
 						maxPrice = maxPriceRange

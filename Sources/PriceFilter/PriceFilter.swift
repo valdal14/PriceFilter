@@ -157,6 +157,11 @@ public struct PriceFilter: View {
 	}
 	
 	// MARK: - Helpers
+	
+	/// Executes the callback function after calculating the range based on current view model data.
+	///
+	/// - Throws: An error if the callback execution fails.
+	///
 	private func executeCallback() async throws {
 		let (min, max) = viewModel.calculateRange()
 		try await onFilterApplied(min, max, viewModel.wasPriceSliderRangeMoved)
@@ -189,7 +194,13 @@ public struct PriceFilter: View {
 		}
 	}
 	
-	func setNewRange(newMin: CGFloat, newMax: CGFloat) {
+	/// Sets a new range for the slider based on the given minimum and maximum values.
+	///
+	/// - Parameters:
+	///   - newMin: The new minimum value for the slider range.
+	///   - newMax: The new maximum value for the slider range.
+	///
+	private func setNewRange(newMin: CGFloat, newMax: CGFloat) {
 		let movMin = calculateSliderPosition(for: newMin)
 		let movMax = calculateSliderPosition(for: newMax)
 		moveLeftSlider(to: movMin)
@@ -198,17 +209,25 @@ public struct PriceFilter: View {
 	
 	/// Function to move the left slider to a specific position
 	/// - Parameter newPosition: The new position for the left slider
-	public func moveLeftSlider(to newPosition: CGFloat) {
+	///
+	private func moveLeftSlider(to newPosition: CGFloat) {
 		leftSliderPosX = newPosition
 	}
 	
 	/// Function to move the right slider to a specific position
 	/// - Parameter newPosition: The new position for the right slider
-	public func moveRightSlider(to newPosition: CGFloat) {
+	///
+	private func moveRightSlider(to newPosition: CGFloat) {
 		rightSliderPosX = newPosition
 	}
 	
-	func calculateSliderPosition(for price: Double) -> CGFloat {
+	/// Calculates the position of the slider corresponding to the given price.
+	///
+	/// - Parameters:
+	///   - price: The price for which the slider position needs to be calculated.
+	/// - Returns: The position of the slider.
+	///
+	private func calculateSliderPosition(for price: Double) -> CGFloat {
 		// Calculate the price range represented by the slider
 		let priceRange = viewModel.maxPrice - viewModel.minPrice
 		

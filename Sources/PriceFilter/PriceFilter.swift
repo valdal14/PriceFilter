@@ -116,7 +116,8 @@ public struct PriceFilter: View {
 							oppositeSliderPosition: $rightSliderPosX,
 							backgroundColor: leftSliderColor,
 							ringColor: ringColor,
-							direction: .right,
+							direction: .right, 
+							sliderStyle: .square,
 							onSlideCompleted: {
 								Task {
 									try await executeCallback()
@@ -128,7 +129,8 @@ public struct PriceFilter: View {
 							oppositeSliderPosition: $leftSliderPosX,
 							backgroundColor: rightSliderColor,
 							ringColor: ringColor,
-							direction: .left,
+							direction: .left, 
+							sliderStyle: .square,
 							onSlideCompleted: {
 								Task {
 									try await executeCallback()

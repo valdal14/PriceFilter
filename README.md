@@ -44,37 +44,29 @@ struct ContentView: View {
 	@State private var maxPrice: Double = 0
 	
     var body: some View {
-		ZStack {
-			Color.gray.opacity(0.4)
-				.ignoresSafeArea()
-			PriceFilter(
-				viewModel: StateObject.init(
-					wrappedValue: .init(
-						minPrice: 124,
-						maxPrice: 23456,
-						currency: .yenOrYuan,
-						decimalFormatter: .dot
-					)
-				),
-				font: .title2,
-				fontWeight: .heavy,
-				textColor: .purple,
-				containerHeight: 170,
-				containerColor: .white,
-				baseBarColor: .purple.opacity(0.2),
-				rangeBarColor: .purple,
-				leftSliderColor: .gray,
-				rightSliderColor: .gray,
-				ringColor: .white
-				priceFont: .subheadline,
-				priceColor: .black,
-				wasRestored: .constant(viewModel.wasRestoredFromCache),
-				newRange: (viewModel.newRange.min, viewModel.newRange.max)
-				) { minPriceRange, maxPriceRange, wasMoved in
-					if wasMoved { 
-						minPrice = minPriceRange
-						maxPrice = maxPriceRange
-					}
+		PriceFilter(
+			viewModel: PriceFilterModel(
+				minPrice: 14,
+				maxPrice: 27
+			), 
+			sliderStyle: .square,
+			font: .title2,
+			fontWeight: .heavy,
+			textColor: .blue,
+			containerHeight: 170,
+			containerColor: .cyan.opacity(0.2),
+			baseBarColor: .gray.opacity(0.2),
+			rangeBarColor: .blue,
+			leftSliderColor: .cyan,
+			rightSliderColor: .cyan,
+			ringColor: .white,
+			priceFont: .subheadline,
+			priceColor: .black,
+			wasRestored: .constant(false),
+			newRange: (16, 18)) { minValue, maxValue, wasMoved in
+				if wasMoved {
+					minPrice = minValue
+					maxPrice = maxValue
 				}
 		}
     }

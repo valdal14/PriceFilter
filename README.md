@@ -19,7 +19,6 @@ PriceFilter: Price Range Selection View for SwiftUI
 * Displays a title, min & max price values, and two sliders for selecting the desired range.
 * Automatically formats price values with currency and decimal formatting.
 * Updates price range dynamically as sliders are moved.
-* Shows an "Apply Filter" button when the range is changed.
 * Provides customisation options for various visual aspects.
 
 ## Requirements

@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct PriceFilterSampleView: View {
-	@State private var minPrice: Double = 0
-	@State private var maxPrice: Double = 0
+	@State private var minPrice: Double = 14
+	@State private var maxPrice: Double = 78
+	/// newRangeMin & newRangeMax represents an example of values you may get
+	/// in a callback if applying the price filters gets back from your backend
+	/// the new price range after applying the filter
+	@State private var newRangeMin: Int = 0
+	@State private var newRangeMax: Int = 0
 	
     var body: some View {
 		ZStack {
@@ -18,8 +23,8 @@ struct PriceFilterSampleView: View {
 			VStack {
 				PriceFilter(
 					viewModel: PriceFilterModel(
-						minPrice: 14,
-						maxPrice: 27,
+						minPrice: minPrice,
+						maxPrice: maxPrice,
 						currency: .euro,
 						decimalFormatter: .comma
 					),
@@ -37,7 +42,7 @@ struct PriceFilterSampleView: View {
 					priceFont: .subheadline,
 					priceColor: .black,
 					wasRestored: .constant(false),
-					newRange: (16, 18)) { minValue, maxValue, wasMoved in
+					newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
 						if wasMoved {
 							minPrice = minValue
 							maxPrice = maxValue
@@ -46,8 +51,8 @@ struct PriceFilterSampleView: View {
 				
 				PriceFilter(
 					viewModel: PriceFilterModel(
-						minPrice: 14,
-						maxPrice: 27,
+						minPrice: minPrice,
+						maxPrice: maxPrice,
 						currency: .czechKoruna,
 						decimalFormatter: .comma
 					),
@@ -65,7 +70,7 @@ struct PriceFilterSampleView: View {
 					priceFont: .subheadline,
 					priceColor: .black,
 					wasRestored: .constant(false),
-					newRange: (16, 18)) { minValue, maxValue, wasMoved in
+					newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
 						if wasMoved {
 							minPrice = minValue
 							maxPrice = maxValue
@@ -74,8 +79,8 @@ struct PriceFilterSampleView: View {
 				
 				PriceFilter(
 					viewModel: PriceFilterModel(
-						minPrice: 14,
-						maxPrice: 27,
+						minPrice: minPrice,
+						maxPrice: maxPrice,
 						currency: .yenOrYuan,
 						decimalFormatter: .dot
 					),
@@ -93,7 +98,7 @@ struct PriceFilterSampleView: View {
 					priceFont: .subheadline,
 					priceColor: .black,
 					wasRestored: .constant(false),
-					newRange: (16, 18)) { minValue, maxValue, wasMoved in
+					newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
 						if wasMoved {
 							minPrice = minValue
 							maxPrice = maxValue
@@ -102,8 +107,8 @@ struct PriceFilterSampleView: View {
 				
 				PriceFilter(
 					viewModel: PriceFilterModel(
-						minPrice: 14,
-						maxPrice: 27,
+						minPrice: minPrice,
+						maxPrice: maxPrice,
 						currency: .indianRupee,
 						decimalFormatter: .comma
 					),
@@ -121,7 +126,7 @@ struct PriceFilterSampleView: View {
 					priceFont: .subheadline,
 					priceColor: .black,
 					wasRestored: .constant(false),
-					newRange: (16, 18)) { minValue, maxValue, wasMoved in
+					newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
 						if wasMoved {
 							minPrice = minValue
 							maxPrice = maxValue

@@ -41,13 +41,15 @@ import SwiftUI
 struct ContentView: View {
 	@State private var minPrice: Double = 0
 	@State private var maxPrice: Double = 0
+	@State private var newRangeMin: Int = 0
+	@State private var newRangeMax: Int = 0
 	
     var body: some View {
 		PriceFilter(
 			viewModel: PriceFilterModel(
-				minPrice: 14,
-				maxPrice: 27
-			), 
+			minPrice: minPrice,
+			maxPrice: maxPrice
+		),
 			sliderStyle: .square,
 			font: .title2,
 			fontWeight: .heavy,
@@ -62,11 +64,11 @@ struct ContentView: View {
 			priceFont: .subheadline,
 			priceColor: .black,
 			wasRestored: .constant(false),
-			newRange: (16, 18)) { minValue, maxValue, wasMoved in
-				if wasMoved {
-					minPrice = minValue
-					maxPrice = maxValue
-				}
+			newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
+		if wasMoved {
+			minPrice = minValue
+			maxPrice = maxValue
+			}
 		}
     }
 }

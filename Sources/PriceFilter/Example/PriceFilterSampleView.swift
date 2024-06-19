@@ -25,7 +25,7 @@ struct PriceFilterSampleView: View {
 					viewModel: PriceFilterModel(
 						minPrice: minPrice,
 						maxPrice: maxPrice,
-						currency: .euro,
+						currency: .none,
 						decimalFormatter: .comma
 					),
 					sliderStyle: .square,

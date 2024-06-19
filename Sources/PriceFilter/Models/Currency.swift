@@ -28,4 +28,5 @@ public enum Currency: String {
 	case emiratiDirham = "د.إ"
 	case saudiRiyal = "﷼"
 	case czechKoruna = "Kč"
+	case none = ""
 }

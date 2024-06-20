@@ -19,7 +19,6 @@ PriceFilter: Price Range Selection View for SwiftUI
 * Displays a title, min & max price values, and two sliders for selecting the desired range.
 * Automatically formats price values with currency and decimal formatting.
 * Updates price range dynamically as sliders are moved.
-* Shows an "Apply Filter" button when the range is changed.
 * Provides customisation options for various visual aspects.
 
 ## Requirements
@@ -42,40 +41,34 @@ import SwiftUI
 struct ContentView: View {
 	@State private var minPrice: Double = 0
 	@State private var maxPrice: Double = 0
+	@State private var newRangeMin: Int = 0
+	@State private var newRangeMax: Int = 0
 	
     var body: some View {
-		ZStack {
-			Color.gray.opacity(0.4)
-				.ignoresSafeArea()
-			PriceFilter(
-				viewModel: StateObject.init(
-					wrappedValue: .init(
-						minPrice: 124,
-						maxPrice: 23456,
-						currency: .yenOrYuan,
-						decimalFormatter: .dot
-					)
-				),
-				font: .title2,
-				fontWeight: .heavy,
-				textColor: .purple,
-				containerHeight: 170,
-				containerColor: .white,
-				baseBarColor: .purple.opacity(0.2),
-				rangeBarColor: .purple,
-				leftSliderColor: .gray,
-				rightSliderColor: .gray,
-				ringColor: .white
-				priceFont: .subheadline,
-				priceColor: .black,
-				wasRestored: .constant(viewModel.wasRestoredFromCache),
-				newRange: (viewModel.newRange.min, viewModel.newRange.max)
-				) { minPriceRange, maxPriceRange, wasMoved in
-					if wasMoved { 
-						minPrice = minPriceRange
-						maxPrice = maxPriceRange
-					}
-				}
+		PriceFilter(
+			viewModel: PriceFilterModel(
+			minPrice: minPrice,
+			maxPrice: maxPrice
+		),
+			sliderStyle: .square,
+			font: .title2,
+			fontWeight: .heavy,
+			textColor: .blue,
+			containerHeight: 170,
+			containerColor: .cyan.opacity(0.2),
+			baseBarColor: .gray.opacity(0.2),
+			rangeBarColor: .blue,
+			leftSliderColor: .cyan,
+			rightSliderColor: .cyan,
+			ringColor: .white,
+			priceFont: .subheadline,
+			priceColor: .black,
+			wasRestored: .constant(false),
+			newRange: (newRangeMin, newRangeMax)) { minValue, maxValue, wasMoved in
+		if wasMoved {
+			minPrice = minValue
+			maxPrice = maxValue
+			}
 		}
     }
 }

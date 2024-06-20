@@ -19,6 +19,7 @@ struct SliderGripView: View {
 	private let backgroundColor: Color
 	private let ringColor: Color
 	private var direction: Direction
+	private let sliderStyle: SliderStyle
 	private let onSlideCompleted: () -> Void
 	
 	init(
@@ -27,18 +28,20 @@ struct SliderGripView: View {
 		backgroundColor: Color = .black,
 		ringColor: Color = .white,
 		direction: Direction,
+		sliderStyle: SliderStyle,
 		onSlideCompleted: @escaping () -> Void
 	) {
 		self._posX = posX
 		self._oppositeSliderPosition = oppositeSliderPosition
 		self.backgroundColor = backgroundColor
-		self.direction = direction
 		self.ringColor = ringColor
+		self.direction = direction
+		self.sliderStyle = sliderStyle
 		self.onSlideCompleted = onSlideCompleted
 	}
 	
 	var body: some View {
-		Circle()
+		setShape(style: sliderStyle)
 			.position(.init(x: posX, y: posY))
 			.foregroundStyle(backgroundColor)
 			.frame(width: Self.gripSize, height: Self.gripSize)
@@ -53,24 +56,28 @@ struct SliderGripView: View {
 					})
 			)
 			.overlay {
-				Circle()
-					.stroke(ringColor.opacity(0.3), lineWidth: 1)
-					.frame(width: Self.ringSize, height: Self.ringSize)
-					.position(.init(x: posX, y: posY))
-					.overlay {
-						HStack(spacing: 3) {
-							ForEach(0..<3) { _ in
-								Rectangle()
-									.foregroundStyle(ringColor.opacity(0.3))
-									.frame(width: 1, height: Self.ringSize - 8)
-							}
-						}
-						.position(.init(x: posX, y: posY))
+				HStack(spacing: 3) {
+					ForEach(0..<3) { _ in
+						Rectangle()
+							.foregroundStyle(ringColor.opacity(0.3))
+							.frame(width: 1, height: Self.ringSize - 8)
 					}
+				}
+				.position(.init(x: posX, y: posY))
 			}
 	}
 	
 	// MARK: - Helpers
+	@ViewBuilder
+	func setShape(style: SliderStyle) -> some View {
+		switch style {
+		case .circle:
+			Circle()
+		case .square:
+			Rectangle()
+		}
+	}
+	
 	private func onDragValueChangedPerform(with value: DragGesture.Value) {
 		let proposedPosX = value.location.x
 		let minX = Self.minPosition
@@ -98,7 +105,8 @@ struct SliderGripView_Previews: PreviewProvider {
 		SliderGripView(
 			posX: .constant(-150),
 			oppositeSliderPosition: .constant(380),
-			direction: .right, 
+			direction: .right,
+			sliderStyle: .square,
 			onSlideCompleted: {
 				/// drag gesture completed
 			}

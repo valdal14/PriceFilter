@@ -27,4 +27,6 @@ public enum Currency: String {
 	case southKoreanWon = "₩"
 	case emiratiDirham = "د.إ"
 	case saudiRiyal = "﷼"
+	case czechKoruna = "Kč"
+	case none = ""
 }

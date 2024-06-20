@@ -24,7 +24,8 @@ public struct PriceFilter: View {
 	@State private var sliderMovementRatio: CGFloat = 0
 	
 	/// title
-	@StateObject public var viewModel: PriceFilterModel
+	@ObservedObject public var viewModel: PriceFilterModel
+	public let sliderStyle: SliderStyle
 	public let font: Font
 	public let fontWeight: Font.Weight
 	public let textColor: Color
@@ -51,7 +52,8 @@ public struct PriceFilter: View {
 	
 	
 	public init(
-		viewModel: StateObject<PriceFilterModel>,
+		viewModel: PriceFilterModel,
+		sliderStyle: SliderStyle,
 		font: Font,
 		fontWeight: Font.Weight,
 		textColor: Color,
@@ -68,7 +70,8 @@ public struct PriceFilter: View {
 		newRange: (Int, Int),
 		onFilterApplied: @escaping PriceFilterCallback
 	) {
-		self._viewModel = viewModel
+		self._viewModel = ObservedObject(wrappedValue: viewModel)
+		self.sliderStyle = sliderStyle
 		self.font = font
 		self.fontWeight = fontWeight
 		self.textColor = textColor
@@ -116,7 +119,8 @@ public struct PriceFilter: View {
 							oppositeSliderPosition: $rightSliderPosX,
 							backgroundColor: leftSliderColor,
 							ringColor: ringColor,
-							direction: .right,
+							direction: .right, 
+							sliderStyle: sliderStyle,
 							onSlideCompleted: {
 								Task {
 									try await executeCallback()
@@ -128,7 +132,8 @@ public struct PriceFilter: View {
 							oppositeSliderPosition: $leftSliderPosX,
 							backgroundColor: rightSliderColor,
 							ringColor: ringColor,
-							direction: .left,
+							direction: .left, 
+							sliderStyle: sliderStyle,
 							onSlideCompleted: {
 								Task {
 									try await executeCallback()
@@ -246,7 +251,14 @@ public struct PriceFilter: View {
 struct PriceFilter_Previews: PreviewProvider {
 	static var previews: some View {
 		PriceFilter(
-			viewModel: StateObject(wrappedValue: .mock),
+			viewModel: PriceFilterModel(
+				title: "Price",
+				minPrice: 14,
+				maxPrice: 28,
+				currency: .euro,
+				decimalFormatter: .dot
+			), 
+			sliderStyle: .circle,
 			font: .headline,
 			fontWeight: .bold,
 			textColor: .black,
@@ -255,10 +267,10 @@ struct PriceFilter_Previews: PreviewProvider {
 			baseBarColor: .black.opacity(0.3),
 			rangeBarColor: .black,
 			leftSliderColor: .black,
-			rightSliderColor: .black, 
+			rightSliderColor: .black,
 			ringColor: .white,
 			priceFont: .subheadline,
-			priceColor: .black, 
+			priceColor: .black,
 			wasRestored: .constant(true),
 			newRange: (40, 60),
 			onFilterApplied: ({ _, _, _ in
